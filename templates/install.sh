@@ -169,7 +169,7 @@ After=network.target
 [Service]
 User=root
 WorkingDirectory=/opt/acme_corp_web
-ExecStart=rackup -p 80
+ExecStart=/usr/local/bin/rackup -p 80 -o 0.0.0.0
 
 [Install]
 WantedBy=multi-user.target
@@ -178,5 +178,5 @@ EOF
 sudo mv /tmp/acme_corp_web.service /etc/systemd/system/
 
 sudo systemctl daemon-reload
-sudo systemctl enable acme_corp_orders
-sudo systemctl start acme_corp_orders
+sudo systemctl enable acme_corp_web
+sudo systemctl start acme_corp_web
