@@ -1,0 +1,6 @@
+.terraform
+.kitchen/
+terraform.tfstate.d/
+credentials.json
+.env
+insecure*

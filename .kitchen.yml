@@ -1,0 +1,31 @@
+---
+driver:
+  name: terraform
+  root_module_directory: test/fixtures/tf_module
+  parallelism: 4
+
+provisioner:
+  name: terraform
+
+transport:
+  name: ssh
+
+verifier:
+  name: terraform
+  groups:
+    - name: app
+      controls:
+        - instance
+        - firewall
+
+platforms:
+  - name: terraform
+
+suites:
+  - name: gcloud_network
+    driver:                                                                                                                  
+      root_module_directory: test/fixtures/tf_module_gcloud_network
+  - name: gcloud_db
+    driver:                                                                                                                  
+      root_module_directory: test/fixtures/tf_module_gcloud_db
+  - name: gcloud_app
