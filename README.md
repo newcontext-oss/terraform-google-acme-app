@@ -28,9 +28,7 @@ To build, validate and then destroy run these commands below:
 ```sh
 bundle exec kitchen converge
 bundle exec kitchen verify
-bundle exec kitchen destroy app
-bundle exec kitchen destroy db
-bundle exec kitchen destroy network
+bundle exec kitchen destroy
 ```
 
 ### Prerequisites

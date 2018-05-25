@@ -26,10 +26,4 @@ platforms:
   - name: terraform
 
 suites:
-  - name: gcloud_network
-    driver:                                                                                                                  
-      root_module_directory: test/fixtures/tf_module_gcloud_network
-  - name: gcloud_db
-    driver:                                                                                                                  
-      root_module_directory: test/fixtures/tf_module_gcloud_db
   - name: gcloud_app
