@@ -40,7 +40,8 @@ bundle exec kitchen destroy network
 - gcloud command line utility (https://cloud.google.com/sdk/)
 - Google Cloud Project with a service account
 - Download service account credentials to: `credentials.json`
-- Create the SSH key: `ssh-keygen -f test/fixtures/tf_module/keys/insecure`
+- Create the module files directory: `mkdir test/fixtures/tf_module/files`
+- Create the SSH key: `ssh-keygen -f test/fixtures/tf_module/files/insecure`
 - Create an environment file: `.env`, add this content:
 
 ```sh
