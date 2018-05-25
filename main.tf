@@ -52,8 +52,8 @@ resource "google_compute_instance" "app" {
   }
 }
 
-resource "google_compute_firewall" "app_tcp22_ingress" {
-  name    = "${random_pet.name.id}-tcp22-ingress"
+resource "google_compute_firewall" "allow_ssh_ingress" {
+  name    = "${random_pet.name.id}-allow-ssh-ingress"
   network = "${data.google_compute_subnetwork.app.network}"
 
   direction = "INGRESS"
@@ -70,8 +70,8 @@ resource "google_compute_firewall" "app_tcp22_ingress" {
   target_tags = ["app"]
 }
 
-resource "google_compute_firewall" "app_tcp80_ingress" {
-  name    = "${random_pet.name.id}-tcp80-ingress"
+resource "google_compute_firewall" "allow_http_ingress" {
+  name    = "${random_pet.name.id}-allow-http-ingress"
   network = "${data.google_compute_subnetwork.app.network}"
 
   direction = "INGRESS"
@@ -88,8 +88,8 @@ resource "google_compute_firewall" "app_tcp80_ingress" {
   target_tags = ["app"]
 }
 
-resource "google_compute_firewall" "app_to_db_tcp28015_ingress" {
-  name    = "${random_pet.name.id}-to-db-tcp28015-ingress"
+resource "google_compute_firewall" "allow_data_ingress_to_db" {
+  name    = "${random_pet.name.id}-allow-data-ingress-to-db"
   network = "${data.google_compute_subnetwork.app.network}"
 
   direction = "INGRESS"
