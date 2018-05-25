@@ -4,3 +4,4 @@ terraform.tfstate.d/
 credentials.json
 .env
 insecure*
+kitchen.local.yml

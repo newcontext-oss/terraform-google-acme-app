@@ -42,11 +42,10 @@ bundle exec kitchen destroy network
 - Download service account credentials to: `credentials.json`
 - Create the module files directory: `mkdir test/fixtures/tf_module/files`
 - Create the SSH key: `ssh-keygen -f test/fixtures/tf_module/files/insecure`
-- Create an environment file: `.env`, add this content:
+- Create a local Kitchen configuration file: `kitchen.local.yml`, add this content:
 
 ```sh
-export TF_VAR_engineer_cidrs="[\"$(dig +short myip.opendns.com @resolver1.opendns.com)/32\"]"
-export GOOGLE_APPLICATION_CREDENTIALS="credentials.json"
-export GCLOUD_PROJECT="<project-id>
-export GCLOUD_REGION="us-west1"
+driver:
+  variables:
+    gcloud_project: <project-id>
 ```
