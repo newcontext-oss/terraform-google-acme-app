@@ -10,8 +10,13 @@ data "template_file" "startup_script" {
   }
 }
 
+resource "random_pet" "name" {
+  length = "1"
+  prefix = "app"
+}
+
 resource "google_compute_instance" "app" {
-  name         = "app"
+  name         = "${random_pet.name.id}"
   machine_type = "n1-standard-1"
   zone         = "us-west1-a"
 
@@ -48,7 +53,7 @@ resource "google_compute_instance" "app" {
 }
 
 resource "google_compute_firewall" "app_tcp22_ingress" {
-  name    = "app-tcp22-ingress"
+  name    = "${random_pet.name.id}-tcp22-ingress"
   network = "${data.google_compute_subnetwork.app.network}"
 
   direction = "INGRESS"
@@ -66,7 +71,7 @@ resource "google_compute_firewall" "app_tcp22_ingress" {
 }
 
 resource "google_compute_firewall" "app_tcp80_ingress" {
-  name    = "app-tcp80-ingress"
+  name    = "${random_pet.name.id}-tcp80-ingress"
   network = "${data.google_compute_subnetwork.app.network}"
 
   direction = "INGRESS"
@@ -84,7 +89,7 @@ resource "google_compute_firewall" "app_tcp80_ingress" {
 }
 
 resource "google_compute_firewall" "app_to_db_tcp28015_ingress" {
-  name    = "app-to-db-tcp28015-ingress"
+  name    = "${random_pet.name.id}-to-db-tcp28015-ingress"
   network = "${data.google_compute_subnetwork.app.network}"
 
   direction = "INGRESS"
