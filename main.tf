@@ -1,9 +1,5 @@
-data "google_compute_network" "main" {
-  name = "${var.network_name}"
-}
-
 data "google_compute_subnetwork" "app" {
-  name = "app"
+  name = "${var.subnetwork_name}"
 }
 
 data "template_file" "startup_script" {
@@ -53,7 +49,7 @@ resource "google_compute_instance" "app" {
 
 resource "google_compute_firewall" "app_tcp22_ingress" {
   name    = "app-tcp22-ingress"
-  network = "${data.google_compute_network.main.name}"
+  network = "${data.google_compute_subnetwork.app.network}"
 
   direction = "INGRESS"
 
@@ -71,7 +67,7 @@ resource "google_compute_firewall" "app_tcp22_ingress" {
 
 resource "google_compute_firewall" "app_tcp80_ingress" {
   name    = "app-tcp80-ingress"
-  network = "${data.google_compute_network.main.name}"
+  network = "${data.google_compute_subnetwork.app.network}"
 
   direction = "INGRESS"
 
@@ -89,7 +85,7 @@ resource "google_compute_firewall" "app_tcp80_ingress" {
 
 resource "google_compute_firewall" "app_to_db_tcp28015_ingress" {
   name    = "app-to-db-tcp28015-ingress"
-  network = "${data.google_compute_network.main.name}"
+  network = "${data.google_compute_subnetwork.app.network}"
 
   direction = "INGRESS"
 
