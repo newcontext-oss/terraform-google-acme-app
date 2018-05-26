@@ -10,13 +10,12 @@ data "template_file" "startup_script" {
   }
 }
 
-resource "random_pet" "name" {
-  length = "1"
-  prefix = "app"
+locals {
+  name = "${var.name}-app"
 }
 
 resource "google_compute_instance" "app" {
-  name         = "${random_pet.name.id}"
+  name         = "${local.name}"
   machine_type = "n1-standard-1"
   zone         = "us-west1-a"
 
@@ -53,7 +52,7 @@ resource "google_compute_instance" "app" {
 }
 
 resource "google_compute_firewall" "allow_ssh_ingress" {
-  name    = "${random_pet.name.id}-allow-ssh-ingress"
+  name    = "${local.name}-allow-ssh-ingress"
   network = "${data.google_compute_subnetwork.app.network}"
 
   direction = "INGRESS"
@@ -71,7 +70,7 @@ resource "google_compute_firewall" "allow_ssh_ingress" {
 }
 
 resource "google_compute_firewall" "allow_http_ingress" {
-  name    = "${random_pet.name.id}-allow-http-ingress"
+  name    = "${local.name}-allow-http-ingress"
   network = "${data.google_compute_subnetwork.app.network}"
 
   direction = "INGRESS"
@@ -89,7 +88,7 @@ resource "google_compute_firewall" "allow_http_ingress" {
 }
 
 resource "google_compute_firewall" "allow_data_ingress_to_db" {
-  name    = "${random_pet.name.id}-allow-data-ingress-to-db"
+  name    = "${local.name}-allow-data-ingress-to-db"
   network = "${data.google_compute_subnetwork.app.network}"
 
   direction = "INGRESS"

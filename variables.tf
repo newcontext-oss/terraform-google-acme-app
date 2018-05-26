@@ -8,6 +8,11 @@ variable "engineer_cidrs" {
   type        = "list"
 }
 
+variable "name" {
+  description = "The name of the application."
+  type        = "string"
+}
+
 variable "ssh_public_key_filepath" {
   description = "file path to ssh public key"
   type        = "string"

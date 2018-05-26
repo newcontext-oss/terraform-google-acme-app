@@ -17,13 +17,19 @@ provider "template" {
   version = "~> 1.0"
 }
 
+resource "random_pet" "name" {
+  length = "1"
+  prefix = "test-org"
+}
+
 module "network" {
-  organization_name = "test-org"
+  organization_name = "${random_pet.name.id}"
   source            = "git::ssh://git@github.com/newcontext/tf_module_gcloud_network.git"
 }
 
 module "db" {
   engineer_cidrs          = "${var.engineer_cidrs}"
+  name                    = "${random_pet.name.id}"
   source                  = "git::ssh://git@github.com/newcontext/tf_module_gcloud_db.git"
   ssh_public_key_filepath = "${path.module}/files/insecure.pub"
   subnetwork_name         = "${module.network.database_subnetwork_name}"
@@ -32,6 +38,7 @@ module "db" {
 module "app" {
   db_internal_ip          = "${module.db.internal_ip}"
   engineer_cidrs          = "${var.engineer_cidrs}"
+  name                    = "${random_pet.name.id}"
   source                  = "../../.."
   ssh_public_key_filepath = "${path.module}/files/insecure.pub"
   subnetwork_name         = "${module.network.app_subnetwork_name}"
