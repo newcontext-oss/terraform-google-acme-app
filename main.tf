@@ -1,13 +1,5 @@
-provider "google" {
-  version = "~> 1.0"
-}
-
-data "google_compute_network" "main" {
-  name = "${var.network_name}"
-}
-
 data "google_compute_subnetwork" "app" {
-  name   = "app"
+  name = "${var.subnetwork_name}"
 }
 
 data "template_file" "startup_script" {
@@ -18,8 +10,13 @@ data "template_file" "startup_script" {
   }
 }
 
+resource "random_pet" "name" {
+  length = "1"
+  prefix = "app"
+}
+
 resource "google_compute_instance" "app" {
-  name         = "app"
+  name         = "${random_pet.name.id}"
   machine_type = "n1-standard-1"
   zone         = "us-west1-a"
 
@@ -38,8 +35,7 @@ resource "google_compute_instance" "app" {
   }
 
   // Local SSD disk
-  scratch_disk {
-  }
+  scratch_disk {}
 
   network_interface {
     subnetwork = "${data.google_compute_subnetwork.app.self_link}"
@@ -50,15 +46,15 @@ resource "google_compute_instance" "app" {
   }
 
   metadata {
-    sshKeys = "ubuntu:${file(var.ssh_public_key_filepath)}",
-    block-project-ssh-keys = "TRUE",
-    startup-script = "${data.template_file.startup_script.rendered}"
+    sshKeys                = "ubuntu:${file(var.ssh_public_key_filepath)}"
+    block-project-ssh-keys = "TRUE"
+    startup-script         = "${data.template_file.startup_script.rendered}"
   }
 }
 
-resource "google_compute_firewall" "app_tcp22_ingress" {
-  name    = "app-tcp22-ingress"
-  network = "${data.google_compute_network.main.name}"
+resource "google_compute_firewall" "allow_ssh_ingress" {
+  name    = "${random_pet.name.id}-allow-ssh-ingress"
+  network = "${data.google_compute_subnetwork.app.network}"
 
   direction = "INGRESS"
 
@@ -74,9 +70,9 @@ resource "google_compute_firewall" "app_tcp22_ingress" {
   target_tags = ["app"]
 }
 
-resource "google_compute_firewall" "app_tcp80_ingress" {
-  name    = "app-tcp80-ingress"
-  network = "${data.google_compute_network.main.name}"
+resource "google_compute_firewall" "allow_http_ingress" {
+  name    = "${random_pet.name.id}-allow-http-ingress"
+  network = "${data.google_compute_subnetwork.app.network}"
 
   direction = "INGRESS"
 
@@ -92,9 +88,9 @@ resource "google_compute_firewall" "app_tcp80_ingress" {
   target_tags = ["app"]
 }
 
-resource "google_compute_firewall" "app_to_db_tcp28015_ingress" {
-  name    = "app-to-db-tcp28015-ingress"
-  network = "${data.google_compute_network.main.name}"
+resource "google_compute_firewall" "allow_data_ingress_to_db" {
+  name    = "${random_pet.name.id}-allow-data-ingress-to-db"
+  network = "${data.google_compute_subnetwork.app.network}"
 
   direction = "INGRESS"
 

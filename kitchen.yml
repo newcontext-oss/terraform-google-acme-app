@@ -1,0 +1,26 @@
+---
+driver:
+  name: terraform
+  root_module_directory: test/fixtures/tf_module
+  parallelism: 4
+  variables:
+    engineer_cidrs: '["<%= `dig +short myip.opendns.com @resolver1.opendns.com`.strip %>/32"]'
+    gcloud_region: us-west1
+    google_application_credentials: <%= ::File.expand_path "credentials.json" %>
+
+provisioner:
+  name: terraform
+
+transport:
+  name: ssh
+
+verifier:
+  name: terraform
+  groups:
+    - name: app
+
+platforms:
+  - name: terraform
+
+suites:
+  - name: gcloud_app

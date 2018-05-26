@@ -28,24 +28,22 @@ To build, validate and then destroy run these commands below:
 ```sh
 bundle exec kitchen converge
 bundle exec kitchen verify
-bundle exec kitchen destroy app
-bundle exec kitchen destroy db
-bundle exec kitchen destroy network
+bundle exec kitchen destroy
 ```
 
 ### Prerequisites
 
 - Ruby 2.2 or greater
-- Terraform 0.10 or greater
+- Terraform >= 0.10.2, < 0.12
 - gcloud command line utility (https://cloud.google.com/sdk/)
 - Google Cloud Project with a service account
 - Download service account credentials to: `credentials.json`
-- Create the SSH key: `ssh-keygen -f test/fixtures/tf_module/keys/insecure`
-- Create an environment file: `.env`, add this content:
+- Create the module files directory: `mkdir test/fixtures/tf_module/files`
+- Create the SSH key: `ssh-keygen -f test/fixtures/tf_module/files/insecure`
+- Create a local Kitchen configuration file: `kitchen.local.yml`, add this content:
 
 ```sh
-export TF_VAR_engineer_cidrs="[\"$(dig +short myip.opendns.com @resolver1.opendns.com)/32\"]"
-export GOOGLE_APPLICATION_CREDENTIALS="credentials.json"
-export GCLOUD_PROJECT="<project-id>
-export GCLOUD_REGION="us-west1"
+driver:
+  variables:
+    gcloud_project: <project-id>
 ```
