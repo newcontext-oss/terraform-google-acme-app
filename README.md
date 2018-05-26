@@ -42,7 +42,7 @@ bundle exec kitchen destroy
 - Create the SSH key: `ssh-keygen -f test/fixtures/tf_module/files/insecure`
 - Create a local Kitchen configuration file: `kitchen.local.yml`, add this content:
 
-```sh
+```yml
 driver:
   variables:
     gcloud_project: <project-id>
