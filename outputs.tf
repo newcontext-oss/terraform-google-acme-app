@@ -17,3 +17,11 @@ output "name" {
   description = "The name of the application compute instance."
   value       = "${google_compute_instance.app.name}"
 }
+
+output "external_ip" {
+  value = "${google_compute_instance.app.network_interface.0.access_config.0.assigned_nat_ip}"
+}
+
+output "internal_ip" {
+  value = "${google_compute_instance.app.network_interface.0.address}"
+}
