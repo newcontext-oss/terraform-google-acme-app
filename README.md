@@ -1,4 +1,4 @@
-# tf_module_glcoud_app
+# terraform-google-acme-app
 
 Terraform module for building out app server on Google Cloud Services
 
@@ -10,7 +10,7 @@ Call it as a module from another Terraform repository.
 
 ```sh
 module "app" {
-  source = "tf_module_gcloud_app"_
+  source = "terraform-google-acme-app"
 
   db_internal_ip = "x.x.x.x"
 

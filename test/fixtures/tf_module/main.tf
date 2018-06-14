@@ -24,13 +24,13 @@ resource "random_pet" "name" {
 
 module "network" {
   organization_name = "${random_pet.name.id}"
-  source            = "git::ssh://git@github.com/newcontext/tf_module_gcloud_network.git"
+  source            = "git::https://github.com/newcontext-oss/terraform-google-acme-network.git"
 }
 
 module "db" {
   engineer_cidrs          = "${var.engineer_cidrs}"
   name                    = "${random_pet.name.id}"
-  source                  = "git::ssh://git@github.com/newcontext/tf_module_gcloud_db.git"
+  source                  = "git::https://github.com/newcontext-oss/terraform-google-acme-db.git"
   ssh_public_key_filepath = "${path.module}/files/insecure.pub"
   subnetwork_name         = "${module.network.database_subnetwork_name}"
 }
